@@ -11,8 +11,17 @@ const instance = new Razorpay({
 
 // ✅ Create Razorpay Order
 exports.createOrder = async (req, res) => {
-  const { userName, email, phone, address, zipcode, amount, quantity } =
-    req.body;
+  const {
+    userName,
+    email,
+    phone,
+    address,
+    zipcode,
+    amount,
+    quantity,
+    productName,
+    productId,
+  } = req.body;
 
   const options = {
     amount: amount * 100 * quantity,
@@ -32,6 +41,8 @@ exports.createOrder = async (req, res) => {
       zipcode,
       amount,
       quantity,
+      productName,
+      productId: parseInt(productId),
       orderId: razorpayOrder.id,
       paymentStatus: "pending",
     });
@@ -84,9 +95,9 @@ exports.getSingleOrder = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const order = await Order.findById(id);
+    const order = await Order.find({ orderId: id });
 
-    if (!order) {
+    if (order.length === 0) {
       return res.status(404).json({ error: "Order not found" });
     }
     res.status(200).json(order);

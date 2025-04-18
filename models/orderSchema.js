@@ -11,6 +11,8 @@ const OrderSchema = new mongoose.Schema(
     paymentId: { type: String },
     amount: { type: Number, required: true },
     quantity: { type: Number, required: true },
+    productName: { type: String, required: true },
+    productId: { type: Number, required: true },
     paymentStatus: {
       type: String,
       enum: ["pending", "paid", "failed"],
